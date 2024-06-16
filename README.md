@@ -4,7 +4,7 @@ Simple CLI application to output weather using [https://www.visualcrossing.com/w
 
 ### Build
 
-Build the CLI using
+Download the binary from the releases or build it using
 ```bash
 go build -o wcli
 ```
@@ -19,7 +19,7 @@ go build -o wcli
 ./wcli -set-key YOURSECRETKEY
 ./wcli -set-location Espoo
 ```
-we
+
 ### Execution
 
 * Execute the CLI using `./wcli`. Weather details are cached under `$HOME/.wcli` after initial execution.
