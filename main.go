@@ -29,9 +29,9 @@ func main() {
 	noCache := flag.Bool("refresh", false, "Do not use cache")
 	flag.Parse()
 
-	config, err := weather.LoadConfig(configPath)
+	config, err := weather.Load[weather.Config](configPath)
 	client := weather.Client{
-		Config:     config,
+		Config:     *config,
 		ConfigPath: configPath,
 		CachePath:  cachePath,
 		NoCache:    *noCache,

@@ -8,29 +8,7 @@ import (
 	"testing"
 )
 
-func TestProcess(t *testing.T) {
-	tempDir, err := os.MkdirTemp("", "")
-	if err != nil {
-		t.Fatalf("Failed to create temporary directory")
-	}
-	defer os.RemoveAll(tempDir)
-
-	configPath := filepath.Join(tempDir, "config.json")
-	cachePath := filepath.Join(tempDir, "weather_cache.json")
-
-	date := "2024-06-15"
-	config := Config{
-		Key:       "SampleKey",
-		Location:  "SampleCity",
-		CacheDate: date,
-	}
-
-	configData, _ := json.Marshal(config)
-	err = os.WriteFile(configPath, configData, 0644)
-	if err != nil {
-		t.Fatalf("Failed to write config to temporary file: %v", err)
-	}
-
+func testWeatherInput(date string) Weather {
 	hours := []hour{}
 	for i := 0; i < 19; i++ {
 		time := fmt.Sprintf("%d:00:00", i)
@@ -46,7 +24,7 @@ func TestProcess(t *testing.T) {
 		hours = append(hours, h)
 	}
 
-	sampleWeather := Weather{
+	return Weather{
 		ResolvedAddress: "Sample City",
 		Days: []day{
 			{
@@ -59,8 +37,31 @@ func TestProcess(t *testing.T) {
 			},
 		},
 	}
+}
 
-	cacheData, _ := json.Marshal(sampleWeather)
+func TestProcess(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "")
+	if err != nil {
+		t.Fatalf("Failed to create temporary directory")
+	}
+	defer os.RemoveAll(tempDir)
+
+	date := "2024-06-15"
+	configPath := filepath.Join(tempDir, "config.json")
+	cachePath := filepath.Join(tempDir, "weather_cache.json")
+
+	config := Config{
+		Key:       "SampleKey",
+		Location:  "SampleCity",
+		CacheDate: date,
+	}
+	configData, _ := json.Marshal(config)
+	err = os.WriteFile(configPath, configData, 0644)
+	if err != nil {
+		t.Fatalf("Failed to write config to temporary file: %v", err)
+	}
+
+	cacheData, _ := json.Marshal(testWeatherInput(date))
 	err = os.WriteFile(cachePath, cacheData, 0644)
 	if err != nil {
 		t.Fatalf("Failed to write cache to temporary file: %v", err)

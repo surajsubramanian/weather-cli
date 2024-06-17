@@ -2,7 +2,10 @@ module github.com/surajsubramanian/weather-cli
 
 go 1.22.1
 
-require github.com/fatih/color v1.17.0
+require (
+	github.com/fatih/color v1.17.0
+	github.com/google/go-cmp v0.6.0
+)
 
 require (
 	github.com/mattn/go-colorable v0.1.13 // indirect

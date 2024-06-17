@@ -4,9 +4,11 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
-func TestSaveLoadConfig(t *testing.T) {
+func TestSaveLoadWeather(t *testing.T) {
 	tempDir, err := os.MkdirTemp("", "")
 	fp := filepath.Join(tempDir, "test.json")
 	if err != nil {
@@ -14,18 +16,15 @@ func TestSaveLoadConfig(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	input := Config{
-		Key:      "testKey",
-		Location: "testLocation",
-	}
-	output := &Config{}
+	input := testWeatherInput("2022-04-05")
+	output := &Weather{}
 
-	err = Save[Config](input, fp)
-	output, err = Load[Config](fp)
+	err = Save[Weather](input, fp)
+	output, err = Load[Weather](fp)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if input != *output {
+	if !cmp.Equal(input, *output) {
 		t.Fatalf("Expected %v, got %v", input, output)
 	}
 }
