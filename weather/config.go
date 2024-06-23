@@ -13,6 +13,10 @@ type Config struct {
 	CacheLocation string `json:"cacheLocation"`
 }
 
+type File interface {
+	Config | Weather
+}
+
 func (c Config) SaveConfig(configPath string) error {
 	data, err := json.MarshalIndent(c, "", "  ")
 	if err != nil {
@@ -24,7 +28,7 @@ func (c Config) SaveConfig(configPath string) error {
 	return os.WriteFile(configPath, data, 0644)
 }
 
-func Load[T any](fp string) (*T, error) {
+func Load[T File](fp string) (*T, error) {
 	var config T
 	file, err := os.ReadFile(fp)
 	if err != nil {
@@ -34,7 +38,7 @@ func Load[T any](fp string) (*T, error) {
 	return &config, err
 }
 
-func Save[T any](config T, fp string) error {
+func Save[T File](config T, fp string) error {
 	data, err := json.MarshalIndent(config, "", "  ")
 	if err != nil {
 		return err

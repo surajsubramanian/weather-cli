@@ -59,7 +59,7 @@ func main() {
 					}
 				}
 			}
-		} else if *setKey != "" {
+		} else {
 			config.Key = *setKey
 		}
 		err := config.SaveConfig(configPath)
