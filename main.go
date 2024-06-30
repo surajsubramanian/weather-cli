@@ -38,7 +38,8 @@ func main() {
 	}
 	if *setKey == "" && *setLocation == "" {
 		if err != nil {
-			panic(err)
+			fmt.Printf("Config file not found. Please run the CLI with --set-key and --set-location to initialize or edit/create %s", configPath)
+			os.Exit(1)
 		} else if config.Key == "" {
 			fmt.Printf("Please run the CLI with --set-key to initialize or edit/create %s", configPath)
 			os.Exit(1)
